@@ -186,3 +186,27 @@ func GetInt8(num uint64, print bool) []int8 {
 	}
 	return randVals
 }
+
+// Roll a dice with faces (default 6) howMany (default 1) time
+func DiceRolls(faces uint64, howMany uint64, print bool) []uint64 {
+	if faces == 0 {
+		faces = 6
+	}
+	if howMany == 0 {
+		howMany = 1
+	}
+	diceRolls := make([]uint64, howMany)
+	var i uint64 = 0
+	rawValues := GetUInt64(howMany, false)
+	for ; i < howMany; i++ {
+		rawValue := rawValues[i]
+		dieCast := rawValue - ((rawValue / faces) * faces) + 1
+		diceRolls[i] = dieCast
+	}
+	if print {
+		for i = 0; i < howMany; i++ {
+			fmt.Println(diceRolls[i])
+		}
+	}
+	return diceRolls
+}

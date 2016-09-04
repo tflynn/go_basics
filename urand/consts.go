@@ -1,0 +1,21 @@
+package urand
+
+const (
+	MinUInt8  = 0
+	MaxUInt8  = 255
+	MinUInt16 = 0
+	MaxUInt16 = 65535
+	MinUInt32 = 0
+	MaxUInt32 = 4294967295
+	MinUInt64 = 0
+	MaxUInt64 = 18446744073709551615
+
+	MinInt8  = -128
+	MaxInt8  = 127
+	MinInt16 = -32768
+	MaxInt16 = 32767
+	MinInt32 = -2147483648
+	MaxInt32 = 2147483647
+	MinInt64 = -9223372036854775808
+	MaxInt64 = 9223372036854775807
+)

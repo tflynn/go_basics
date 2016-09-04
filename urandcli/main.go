@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/tflynn/gobasics/urand"
 	"os"
+	"regexp"
 	"strconv"
 	"unsafe"
 )
@@ -28,18 +29,20 @@ Where:
 	var cmd string
 	var howMany uint64 = 1
 	var dieFaces uint64 = 6
+	var validIntCmd = regexp.MustCompile(`^[u]*int`)
+	var validDiceCmd = regexp.MustCompile(`^diceRolls$`)
 
 	args := os.Args[1:]
 	if len(args) > 0 {
 		cmd = args[0]
-		if len(args) > 1 {
+		if len(args) > 1 && (validIntCmd.MatchString(cmd) || validDiceCmd.MatchString(cmd)) {
 			total, err := strconv.ParseInt(args[1], 10, 64) // use base 10 for sanity
 			if err != nil {
 				fmt.Println(err)
 			}
 			howMany = uint64(total)
 		}
-		if len(args) > 2 {
+		if len(args) > 2 && validDiceCmd.MatchString(cmd) {
 			total, err := strconv.ParseInt(args[2], 10, 64) // use base 10 for sanity
 			if err != nil {
 				fmt.Println(err)

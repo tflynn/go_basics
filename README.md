@@ -8,7 +8,7 @@ urandcli
 
 Console interface for urand library.
 
-  Generate random integers, random dice throws
+  Generate random integers, random dice throws.
   
   Usage: 
   
@@ -24,4 +24,11 @@ Console interface for urand library.
       howMany Number of integers to generate or number of times to roll the dice. Defaults to 1 if not specified.
       
       dieFaces Number of die faces. Defaults to 6 if not specified.
+  
+Installation
+
+  go get https://github.com/tflynn/gobasics.git
+  go install
+  go install github.com/tflynn/gobasics/urand
+  go install github.com/tflynn/gobasics/urandcli
   

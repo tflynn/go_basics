@@ -28,7 +28,10 @@ Console interface for urand library.
 Installation
 
   go get https://github.com/tflynn/gobasics.git
+  
   go install
+  
   go install github.com/tflynn/gobasics/urand
+  
   go install github.com/tflynn/gobasics/urandcli
   

@@ -1,3 +1,4 @@
+// urandcli - Console interface for urand library
 package main
 
 import (
@@ -9,12 +10,14 @@ import (
 	"unsafe"
 )
 
+// urandcli Main entry point
 func main() {
 	process_command_line()
 }
 
+// urandcli Process the command line
 func process_command_line() {
-	var usage = `Generate random integers
+	const usage = `Generate random integers
 
 Usage: urandcli [-h | intType | diceRolls ] [howMany] [dieFaces]
 

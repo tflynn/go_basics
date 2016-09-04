@@ -13,17 +13,21 @@ Installation
     go install github.com/tflynn/gobasics/urand
     
     go install github.com/tflynn/gobasics/urandcli
-  
+    
 
 urand
 -----
 
 Library to generate random integers, random dice throws
 
+Documentation: https://godoc.org/github.com/tflynn/gobasics/urand
+
 urandcli
 --------
 
 Console interface for urand library.
+
+Documentation: https://godoc.org/github.com/tflynn/gobasics/urandcli
 
   Generate random integers, random dice throws.
   

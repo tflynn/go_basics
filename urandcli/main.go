@@ -19,14 +19,18 @@ func main() {
 func process_command_line() {
 	const usage = `Generate random integers
 
-Usage: urandcli [-h | intType | diceRolls ] [howMany] [dieFaces]
+Usage: urandcli [-h | intType | diceRolls | diceWords ] [howMany] [dieFaces]
 
 Where:
 
     -h Print this information and exit
-    intType Integer type - int, int8, int16, int32, int64, uint8, uint16, uint32, uint64. Defaults to 'uint' if not specified
-    diceRolls Roll the dice
-    howMany Number of integers to generate or number of times to roll the dice, Defaults to 1.
+    intType Integer type - int, int8, int16, int32, int64, uint8, uint16, uint32, uint64. Defaults to 'uint' if not specified.
+    diceRolls Roll the dice.
+    diceWords Words based on dice rolls.
+    howMany 
+	  Number of integers to generate. Defaults to 1.
+	  Number of times to roll the dice. Defaults to 1.
+	  Number of diceWords. Defaults to 6.
     dieFaces Number of die faces. Defaults to 6
 `
 	var cmd string
@@ -34,11 +38,17 @@ Where:
 	var dieFaces uint64 = 6
 	var validIntCmd = regexp.MustCompile(`^[u]*int`)
 	var validDiceCmd = regexp.MustCompile(`^diceRolls$`)
+	var validDiceWordsCmd = regexp.MustCompile(`^diceWords$`)
 
 	args := os.Args[1:]
 	if len(args) > 0 {
 		cmd = args[0]
-		if len(args) > 1 && (validIntCmd.MatchString(cmd) || validDiceCmd.MatchString(cmd)) {
+
+		if validDiceWordsCmd.MatchString(cmd) {
+			howMany = 6
+		}
+
+		if len(args) > 1 && (validIntCmd.MatchString(cmd) || validDiceCmd.MatchString(cmd) || validDiceWordsCmd.MatchString(cmd)) {
 			total, err := strconv.ParseInt(args[1], 10, 64) // use base 10 for sanity
 			if err != nil {
 				fmt.Println(err)
@@ -90,6 +100,8 @@ Where:
 		urand.GetInt8(howMany, true)
 	case "diceRolls":
 		urand.DiceRolls(dieFaces, howMany, true)
+	case "diceWords":
+		urand.GetRandDiceWords(howMany, true)
 	default:
 		urand.GetUInt64(howMany, true)
 	}

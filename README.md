@@ -27,8 +27,6 @@ urandcli
 
 Console interface for urand library.
 
-Documentation: https://godoc.org/github.com/tflynn/gobasics/urandcli
-
   Generate random integers, random dice throws.
   
   Usage: 

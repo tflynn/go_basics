@@ -1,4 +1,4 @@
-// Package urand provides functions for obtaining (sets of) random integer values
+// Package urand provides functions for obtaining (sets of) random integer values, dice throws
 //
 package urand
 

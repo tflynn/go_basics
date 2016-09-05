@@ -22,6 +22,8 @@ Library to generate random integers, random dice throws, words based on random d
 
 Documentation: https://godoc.org/github.com/tflynn/gobasics/urand
 
+'Words based on random dice throws' is a direct implementation of Diceware http://world.std.com/~reinhold/diceware.html
+
 urandcli
 --------
 

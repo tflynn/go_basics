@@ -6,9 +6,7 @@ Basic Go (golang) tools
 Installation
 ------------
 
-    go get https://github.com/tflynn/gobasics.git
-    
-    go install
+    go get github.com/tflynn/gobasics
     
     go install github.com/tflynn/gobasics/urand
     

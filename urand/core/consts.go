@@ -1,4 +1,4 @@
-package urand
+package core
 
 const (
 	MinUInt8  = 0

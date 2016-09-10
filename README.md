@@ -8,9 +8,8 @@ Installation
 
     go get github.com/tflynn/gobasics
     
-    go install github.com/tflynn/gobasics/urand
-    
-    go install github.com/tflynn/gobasics/urandcli
+    go install github.com/tflynn/gobasics/urand/urandcli
+    go install github.com/tflynn/gobasics/urand/urandserver
     
 
 urand

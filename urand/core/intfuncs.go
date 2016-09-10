@@ -1,5 +1,5 @@
 // Package urand provides functions for obtaining (sets of) random integer values, random dice throws, random dice words
-package urand
+package core
 
 import (
 	"bytes"

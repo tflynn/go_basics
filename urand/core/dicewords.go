@@ -1,4 +1,4 @@
-package urand
+package core
 
 import (
 	"bytes"

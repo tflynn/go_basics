@@ -3,11 +3,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/tflynn/gobasics/urand"
 	"os"
 	"regexp"
 	"strconv"
 	"unsafe"
+	"github.com/tflynn/gobasics/urand/core"
 )
 
 // urandcli Main entry point
@@ -27,7 +27,7 @@ Where:
     intType Integer type - int, int8, int16, int32, int64, uint8, uint16, uint32, uint64. Defaults to 'uint' if not specified.
     diceRolls Roll the dice.
     diceWords Words based on dice rolls.
-    howMany 
+    howMany
 	  Number of integers to generate. Defaults to 1.
 	  Number of times to roll the dice. Defaults to 1.
 	  Number of diceWords. Defaults to 6.
@@ -83,26 +83,26 @@ Where:
 	case "-h":
 		fmt.Println(usage)
 	case "uint64":
-		urand.GetUInt64(howMany, true)
+		core.GetUInt64(howMany, true)
 	case "uint32":
-		urand.GetUInt32(howMany, true)
+		core.GetUInt32(howMany, true)
 	case "uint16":
-		urand.GetUInt16(howMany, true)
+		core.GetUInt16(howMany, true)
 	case "uint8":
-		urand.GetUInt8(howMany, true)
+		core.GetUInt8(howMany, true)
 	case "int64":
-		urand.GetInt64(howMany, true)
+		core.GetInt64(howMany, true)
 	case "int32":
-		urand.GetInt32(howMany, true)
+		core.GetInt32(howMany, true)
 	case "int16":
-		urand.GetInt16(howMany, true)
+		core.GetInt16(howMany, true)
 	case "int8":
-		urand.GetInt8(howMany, true)
+		core.GetInt8(howMany, true)
 	case "diceRolls":
-		urand.DiceRolls(dieFaces, howMany, true)
+		core.DiceRolls(dieFaces, howMany, true)
 	case "diceWords":
-		urand.GetRandDiceWords(howMany, true)
+		core.GetRandDiceWords(howMany, true)
 	default:
-		urand.GetUInt64(howMany, true)
+		core.GetUInt64(howMany, true)
 	}
 }

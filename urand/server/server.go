@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	//	"log"
+//	"time"
 )
 
 func RunServer(router *gin.Engine, port string) {
@@ -29,6 +30,13 @@ func healthHandler(c *gin.Context) {
 }
 
 func randomTypeHandler(c *gin.Context) {
+	randomSet,_ := Get(5)
+	for i := 0 ; i < len(randomSet.entries); i++ {
+		entry := randomSet.entries[i]
+		fmt.Println("entry.index ", entry.index)
+		fmt.Println("entry.values ", entry.values)
+	}
+
 	randomType := c.Param("randomType")
 	total := c.DefaultQuery("total", "10")
 	c.String(http.StatusOK, "%s total %s", randomType, total)

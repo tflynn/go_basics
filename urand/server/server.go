@@ -16,6 +16,8 @@ const (
 	maxsetSize int = 1000
 	minRetentionSecs int = 1
 	maxRetentionSecs int = 60
+	minTotalSets int = 0
+	maxTotalSets int = maxRetentionSecs
 )
 
 func RunServer(router *gin.Engine, port string) {
@@ -44,13 +46,18 @@ func randomSetHandler(c *gin.Context) {
 	setSize, err1 := strconv.Atoi(setSizeParam)
 	retentionParam := c.DefaultQuery("retention", "1")
 	retention, err2 := strconv.Atoi(retentionParam)
+	totalSetsParam := c.DefaultQuery("sets", "0")
+	totalSets, err3 := strconv.Atoi(totalSetsParam)
 	fmt.Printf("randomSetHandler: %s retention %s setSize %s\n",randomType, retentionParam, setSizeParam)
-	if err1 != nil || err2 != nil {
+	if err1 != nil || err2 != nil || err3 != nil {
 		if err1 != nil {
 			c.String(http.StatusBadRequest, "Invalid setSize %s", randomType, setSizeParam)
 		}
 		if err2 != nil {
 			c.String(http.StatusBadRequest, "Invalid retention period %s", randomType, retentionParam)
+		}
+		if err3 != nil {
+			c.String(http.StatusBadRequest, "Invalid total sets %s", randomType, totalSetsParam)
 		}
 	} else {
 		validationError := false
@@ -62,8 +69,12 @@ func randomSetHandler(c *gin.Context) {
 			c.String(http.StatusBadRequest, "Invalid retention period %s", randomType, retentionParam)
 			validationError = true
 		}
+		if totalSets < minTotalSets || totalSets > maxTotalSets {
+			c.String(http.StatusBadRequest, "Invalid total sets  %s", randomType, totalSetsParam)
+			validationError = true
+		}
 		if ! validationError {
-			randomSet,_ := Get(uint64(retention),randomType, uint64(setSize))
+			randomSet,_ := Get(uint64(retention),randomType, uint64(setSize), uint64(totalSets))
 			for i := 0 ; i < len(randomSet.entries); i++ {
 				entry := randomSet.entries[i]
 				switch randomType {

@@ -67,11 +67,11 @@ func Set(randomSet *RandomSet, durationInSecs uint64, randomType string) {
 // Get an item from the cache. Returns the item or nil, and a bool indicating
 // The key is assumed to be some numbers of seconds i.e. 3 * time.Second
 // The entry will be created if not present
-func Get(durationInSecs uint64, randomType string, setSize uint64 ) (*RandomSet, bool) {
+func Get(durationInSecs uint64, randomType string, setSize uint64, totalSets uint64 ) (*RandomSet, bool) {
 	eName := entryName(durationInSecs, randomType)
 	_, present := randomSetCache.Get(eName)
 	if ! present {
-		randomSet := generateRandomSet(durationInSecs, randomType, setSize)
+		randomSet := generateRandomSet(durationInSecs, randomType, setSize, totalSets)
 		randomSetCache.Set(eName,randomSet,secToDuration(durationInSecs))
 	}
 	entry, present := randomSetCache.Get(eName)
@@ -134,8 +134,13 @@ func generateRandomEntry(randomType string, setSize uint64) *RandomEntry {
 	return randomEntry
 }
 
-func generateRandomSet(durationInSecs uint64, randomType string, setSize uint64) *RandomSet {
-	totalEntries := calcTotalEntries(durationInSecs)
+func generateRandomSet(durationInSecs uint64, randomType string, setSize uint64, totalSets uint64) *RandomSet {
+	var totalEntries uint64
+	if totalSets == 0 {
+		totalEntries = calcTotalEntries(durationInSecs)
+	} else {
+		totalEntries = totalSets
+	}
 	randomEntries := make([]*RandomEntry,totalEntries, totalEntries)
 	for i := uint64(0) ; i < totalEntries ; i++ {
 		randomEntries[i] = generateRandomEntry(randomType, setSize)

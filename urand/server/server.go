@@ -6,18 +6,18 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+	"strings"
 	//	"log"
-//	"time"
-
+	//	"time"
 )
 
 const (
-	minsetSize int = 1
-	maxsetSize int = 1000
+	minsetSize       int = 1
+	maxsetSize       int = 1000
 	minRetentionSecs int = 1
 	maxRetentionSecs int = 60
-	minTotalSets int = 0
-	maxTotalSets int = maxRetentionSecs
+	minTotalSets     int = 0
+	maxTotalSets     int = maxRetentionSecs
 )
 
 func RunServer(router *gin.Engine, port string) {
@@ -48,7 +48,7 @@ func randomSetHandler(c *gin.Context) {
 	retention, err2 := strconv.Atoi(retentionParam)
 	totalSetsParam := c.DefaultQuery("sets", "0")
 	totalSets, err3 := strconv.Atoi(totalSetsParam)
-	fmt.Printf("randomSetHandler: %s retention %s setSize %s\n",randomType, retentionParam, setSizeParam)
+	//fmt.Printf("randomSetHandler: %s retention %s setSize %s totalSets %s\n", randomType, retentionParam, setSizeParam, totalSetsParam)
 	if err1 != nil || err2 != nil || err3 != nil {
 		if err1 != nil {
 			c.String(http.StatusBadRequest, "Invalid setSize %s", randomType, setSizeParam)
@@ -73,34 +73,26 @@ func randomSetHandler(c *gin.Context) {
 			c.String(http.StatusBadRequest, "Invalid total sets  %s", randomType, totalSetsParam)
 			validationError = true
 		}
-		if ! validationError {
-			randomSet,_ := Get(uint64(retention),randomType, uint64(setSize), uint64(totalSets))
-			for i := 0 ; i < len(randomSet.entries); i++ {
-				entry := randomSet.entries[i]
-				switch randomType {
-				case "uint64":
-					c.JSON(http.StatusOK, gin.H{"index": entry.indexUint64, "values": entry.valuesUint64})
-				case "uint32":
-					c.JSON(http.StatusOK, gin.H{"index": entry.indexUint32, "values": entry.valuesUint32})
-				case "uint16":
-					c.JSON(http.StatusOK, gin.H{"index": entry.indexUint16, "values": entry.valuesUint16})
-				case "uint8":
-					c.JSON(http.StatusOK, gin.H{"index": entry.indexUint8, "values": entry.valuesUint8})
-				case "int64":
-					c.JSON(http.StatusOK, gin.H{"index": entry.indexInt64, "values": entry.valuesInt64})
-				case "int32":
-					c.JSON(http.StatusOK, gin.H{"index": entry.indexInt32, "values": entry.valuesInt32})
-				case "int16":
-					c.JSON(http.StatusOK, gin.H{"index": entry.indexInt16, "values": entry.valuesInt16})
-				case "int8":
-					c.JSON(http.StatusOK, gin.H{"index": entry.indexInt8, "values": entry.valuesInt8})
-				default:
-					c.JSON(http.StatusBadRequest,  gin.H{"Error": fmt.Sprintf("Unknown random type %s",randomType)})
-				}
-			}
+		//TODO Needs stronger validation
+		if !strings.Contains(randomType, "int") {
+			c.String(http.StatusBadRequest, "Invalid randomType  %s", randomType)
+			validationError = true
+		}
+		if totalSets == 0 {
+			totalSets = retention
+		}
 
-			//c.String(http.StatusOK, "%s setSize %d", randomType, setSize)
+		if !validationError {
+			randomSet, _ := Get(uint64(retention), randomType, uint64(setSize), uint64(totalSets))
+			outputObjs := make([]interface{}, totalSets, totalSets)
+			for i := 0; i < totalSets; i++ {
+				entry := randomSet.entries[i]
+				outputObj := make(map[string]interface{})
+				outputObj["index"] = entry.index
+				outputObj["values"] = entry.values
+				outputObjs[i] = outputObj
+			}
+			c.JSON(http.StatusOK, outputObjs)
 		}
 	}
 }
-
